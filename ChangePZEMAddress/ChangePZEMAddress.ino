@@ -32,20 +32,55 @@ pins.
 PZEM004Tv30 pzem1(PZEM_SERIAL, PZEM_RX_PIN, PZEM_TX_PIN);
 #endif
 
+#define but_up 35
+#define but_down 32
+#define but_enter 34
+uint8_t adr_counter = 0x00;
+
 void setup() {
     CONSOLE_SERIAL.begin(115200);
-
+    
     CONSOLE_SERIAL.println("ESP32 Start");
-
+    pinMode(but_up,INPUT);
+    pinMode(but_down,INPUT);
+    pinMode(but_enter,INPUT);
+    /*
     CONSOLE_SERIAL.print("PZEM Current Address:");     CONSOLE_SERIAL.print(pzem1.readAddress(), HEX);
     
     // Change PZEM Address here.
     pzem1.setAddress(0x02);
 
     CONSOLE_SERIAL.print("PZEM New Address:");     CONSOLE_SERIAL.print(pzem1.readAddress(), HEX);
-
+*/
 }
 
 void loop() {
+//    CONSOLE_SERIAL.println("new");
+    
+    if (digitalRead(but_up)==HIGH){
+        adr_counter++;
+        CONSOLE_SERIAL.print("new address: ");
+        CONSOLE_SERIAL.println(adr_counter,HEX);
+        delay(250);
+    }
+    if (digitalRead(but_down)==HIGH){
+        adr_counter--;
+        CONSOLE_SERIAL.print("new address: ");
+        CONSOLE_SERIAL.println(adr_counter,HEX);
+        delay(250);
+    }
+    if (digitalRead(but_enter)==HIGH){
+        CONSOLE_SERIAL.print("selected address: ");
+        CONSOLE_SERIAL.println(adr_counter,HEX);
+        
+        CONSOLE_SERIAL.print("PZEM Current Address:");     CONSOLE_SERIAL.print(pzem1.readAddress(), HEX);
+    
+        // Change PZEM Address here.
+        pzem1.setAddress(adr_counter);
 
+        CONSOLE_SERIAL.print("PZEM New Address:");     CONSOLE_SERIAL.print(pzem1.readAddress(), HEX);
+
+        //        adr_counter=0;
+        delay(250);
+    }
 }
