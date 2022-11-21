@@ -32,11 +32,11 @@ pins.
 PZEM004Tv30 pzem1(PZEM_SERIAL, PZEM_RX_PIN, PZEM_TX_PIN);
 #endif
 
-#define but_up 35
-#define but_down 32
-#define but_enter 34
-#define led_green 18
-#define led_red 5
+#define but_enter 35
+#define but_up 32
+#define but_down 34
+#define led_red 18
+#define led_green 5
 uint8_t adr_counter = 0x00;
 
 void setup() {
@@ -89,7 +89,7 @@ void loop() {
         digitalWrite(led_red, LOW);
     }
     if (digitalRead(but_enter)==HIGH){
-        //digitalWrite(led_red, HIGH);
+        digitalWrite(led_green, LOW);
         CONSOLE_SERIAL.print("selected address: ");
         CONSOLE_SERIAL.println(adr_counter,HEX);
         
@@ -111,6 +111,7 @@ void loop() {
             digitalWrite(led_red, LOW);
             delay(250);
         }
-        
+        delay(500);
+        digitalWrite(led_green, HIGH);
     }
 }
